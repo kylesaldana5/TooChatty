@@ -7,7 +7,13 @@
         "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
     },
     "dependencies": {
-        "express": "^4.16.2"
+        "body-parser": "^1.18.2",
+        "express": "^4.16.2",
+        "pg": "^7.4.1",
+        "pg-hstore": "^2.3.2",
+        "sequelize": "^4.37.6",
+        "twilio": "^3.16.0",
+        "watson-developer-cloud": "^3.4.1"
     },
     "devDependencies": {
         "concurrently": "^3.5.0"
