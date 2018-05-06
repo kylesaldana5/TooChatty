@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import classNames from 'classnames'
 import axios from 'axios';
 import avatar from '../../assets/avatar.png'
-
+import ContactsMessage from './ContactsMessage/ContactsMessage';
+import WatsonMessage from './WatsonMessage/WatsonMessage';
 
 export default class Messenger extends Component {
 
@@ -15,8 +16,6 @@ export default class Messenger extends Component {
         }
 
         this._onResize = this._onResize.bind(this)
-
-        this.addTestMessages = this.addTestMessages.bind(this)
     }
 
     _onResize() {
@@ -28,38 +27,15 @@ export default class Messenger extends Component {
     componentDidMount() {
         window.addEventListener("resize", this._onResize)
 
-        this.addTestMessages();
-
         axios.get('http://localhost:5000/texts')
-            .then(function (response) {
+            .then(response => {
+                this.setState({messages: response.data})
                 console.log(response.data);
             })
-            .catch(function (error) {
+            .catch(error => {
                 console.log(error);
             });
         
-    }
-
-    addTestMessages() {
-        let { messages } = this.state;
-
-
-        for (let i = 0; i < 100; i++) {
-
-            let isMe = false;
-
-            if (i % 3 === 0) {
-                isMe = true
-            }
-            const newMsg = {
-                author: `Author: ${i}`,
-                body: `The body of message ${i}`,
-                avatar: avatar,
-                me: isMe,
-            }
-            messages.push(newMsg);
-        }
-        this.setState({ messages: messages })
     }
 
     componentWillUnmount() {
@@ -68,10 +44,25 @@ export default class Messenger extends Component {
     }
 
     render() {
-        const { height, messages } = this.state;
+        const messages = this.state.messages.map((message, index) =>{
+            return (
+            <div key={index}>
+            <ContactsMessage 
+            name={message.contactsPhone} 
+            text={message.contactsText}
+            />
+            <WatsonMessage 
+            name={message.twilioPhone}
+            text={message.watsonText}
+            />
+            </div>
+            )
+        })
+        const { height} = this.state; 
         const style = {
             height: height
-        }
+        } 
+
         return (
             <div style={style} className="app-messenger">
                 <div className="header">
@@ -93,28 +84,7 @@ export default class Messenger extends Component {
                     <div className="sidebar-left">Left sidebar</div>
                     <div className="content">
                         <div className="messages">
-
-                            {messages.map((message, index) => {
-
-                                return (
-
-                                    <div key={index} className={classNames('message', { 'me': message.me })}>
-                                        <div className="message-user-image">
-                                            <img src={message.avatar} alt={"page"} />
-                                        </div>
-                                        <div className="message-body">
-                                            <div className="message-author">{message.me ? 'You' : message.author} says:</div>
-                                            <div className="message-text">
-                                                <p>
-                                                    {message.body}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                )
-                            })}
-
+                            {messages}
                         </div>
 
                         <div className="messenger-input">
