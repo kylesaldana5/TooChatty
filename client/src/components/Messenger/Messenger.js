@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classNames from 'classnames'
+import axios from 'axios';
 import avatar from '../../assets/avatar.png'
 
 
@@ -28,6 +29,15 @@ export default class Messenger extends Component {
         window.addEventListener("resize", this._onResize)
 
         this.addTestMessages();
+
+        axios.get('http://localhost:5000/texts')
+            .then(function (response) {
+                console.log(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        
     }
 
     addTestMessages() {
@@ -54,6 +64,7 @@ export default class Messenger extends Component {
 
     componentWillUnmount() {
         window.removeEventListener("resize", this._onResize)
+
     }
 
     render() {
@@ -115,7 +126,7 @@ export default class Messenger extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className="sidebar-right">Right sidebar</div>
+                    {/* <div className="sidebar-right">Right sidebar</div> */}
                 </div>
             </div>
         )
