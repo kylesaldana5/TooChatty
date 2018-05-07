@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var Name = sequelize.define('Name', {
-    phone: DataTypes.BIGINT,
+    phone: {type: DataTypes.BIGINT, unique: true },
     picture: DataTypes.STRING,
     name: DataTypes.STRING
   }, {tableName: "names"});

@@ -7,11 +7,11 @@ const keys = require('../key')
 app.set('models', require('../models'))
 
 
-    module.exports.messageCovo = (req, res) => {
+module.exports.messageCovo = (req, res) => {
         
         // grabbing need information to pass along to watson and twilio 
         let message = req.query.Body;
-        let number = req.query.From;
+        let number = req.query.From
         let twilioNumber = req.query.To;
 
         // IMPORTANT keys
@@ -62,13 +62,14 @@ app.set('models', require('../models'))
                     contexts[contextIndex].context = response.context;
                 }
 
+                if(response.intents.length > 0){
                 let intent = response.intents[0].intent;
                 console.log("intent", intent);
                 if (intent == "done") {
                     //contexts.splice(contexts.indexOf({'from': number, 'context': response.context}),1);
                     contexts.splice(contextIndex, 1);
                 }
-
+                }
                 let client = require('twilio')(
                     twilioSID ,
                     twilioAuthToken
@@ -91,7 +92,7 @@ app.set('models', require('../models'))
                     contactsPhone: number,
                     contactsText: message,
                     watsonText: response.output.text[0],
-                    twilioNumber: twilioNumber
+                    twilioPhone: twilioNumber
 
                 })
                     .then((data) => {
@@ -107,20 +108,6 @@ app.set('models', require('../models'))
                 const {Name} = req.app.get("models");
                 Name.create({
                     phone: number,                    
-                })
-                    .then((data) => {
-                        console.log('name table data', data);
-
-                    })
-                    .catch((err) => {
-                        console.log('err', err);
-
-                    });
-                
-                 // postgres for the user table
-                const { User } = req.app.get("models");
-                User.create({
-                    twilioPhone: twilioNumber,
                 })
                     .then((data) => {
                         console.log('name table data', data);
