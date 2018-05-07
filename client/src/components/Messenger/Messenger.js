@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import classNames from 'classnames'
 import axios from 'axios';
 import './Messenger.css'
 import avatar from '../../assets/avatar.png'
@@ -16,6 +15,8 @@ export default class Messenger extends Component {
         this.state = {
             height: window.innerHeight,
             messages: [],
+            phoneNumbers: [],
+            isHidden: true
         }
 
         this._onResize = this._onResize.bind(this)
@@ -30,15 +31,23 @@ export default class Messenger extends Component {
     componentDidMount() {
         window.addEventListener("resize", this._onResize)
 
+        // get request to get all information from message table
         axios.get('http://localhost:5000/texts')
             .then(response => {
-                this.setState({ messages: response.data })
-                console.log(response.data);
+                this.setState({ messages: response.data })                                             
             })
             .catch(error => {
                 console.log(error);
             });
-
+        
+        // get request to get non duplicate phone numbers
+        axios.get('http://localhost:5000/numbers')
+            .then(response => {
+                this.setState({ phoneNumbers: response.data }) 
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
     componentWillUnmount() {
@@ -46,7 +55,15 @@ export default class Messenger extends Component {
 
     }
 
+    toggleHidden() {
+        this.setState({
+            isHidden: !this.state.isHidden
+        })
+    }
+
     render() {
+        
+        // mapping over data to insert into contacts message and watson message component 
         const messages = this.state.messages.map((message, index) => {
             return (
                 <div key={index}>
@@ -54,11 +71,13 @@ export default class Messenger extends Component {
                     <WatsonMessage text={message.watsonText} />
                 </div>
             )
-        })
+        })        
 
-        const contacts = this.state.messages.map((message, index) => {
-        return <Contacts key={index} name={message.contactsPhone}/> 
+        // mapping over data to insert into contacts component 
+        const contacts = this.state.phoneNumbers.map((message, index) => {
+            return <Contacts key={index} name={message.contactsPhone} onClick={this.toggleHidden.bind(this)} />
         })
+        
 
         const { height } = this.state;
         const style = {
@@ -67,9 +86,9 @@ export default class Messenger extends Component {
 
         return (
             <div id="container">
-                <aside id="sidebar">{contacts}</aside>
+                <aside id="sidebar"> {contacts}</aside>
                 <section id="main">
-                    <section id="messages-list">{messages}</section>
+                    <section id="messages-list">{!this.state.isHidden && messages}</section>
                 </section>
             </div>
         )

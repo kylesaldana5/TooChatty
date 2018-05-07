@@ -1,6 +1,4 @@
 "use strict";
-const express = require('express');
-const app = express();
 
 module.exports.getCurrentText = (req, res, next) =>{
     let { Message } = req.app.get("models");
