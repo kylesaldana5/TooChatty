@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import classNames from 'classnames'
 import axios from 'axios';
+import './Messenger.css'
 import avatar from '../../assets/avatar.png'
 import ContactsMessage from './ContactsMessage/ContactsMessage';
 import WatsonMessage from './WatsonMessage/WatsonMessage';
+import Contacts from './Contacts/Contacts'
+
 
 export default class Messenger extends Component {
 
@@ -29,13 +32,13 @@ export default class Messenger extends Component {
 
         axios.get('http://localhost:5000/texts')
             .then(response => {
-                this.setState({messages: response.data})
+                this.setState({ messages: response.data })
                 console.log(response.data);
             })
             .catch(error => {
                 console.log(error);
             });
-        
+
     }
 
     componentWillUnmount() {
@@ -44,60 +47,30 @@ export default class Messenger extends Component {
     }
 
     render() {
-        const messages = this.state.messages.map((message, index) =>{
+        const messages = this.state.messages.map((message, index) => {
             return (
-            <div key={index}>
-            <ContactsMessage 
-            name={message.contactsPhone} 
-            text={message.contactsText}
-            />
-            <WatsonMessage 
-            name={message.twilioPhone}
-            text={message.watsonText}
-            />
-            </div>
+                <div key={index}>
+                    <ContactsMessage text={message.contactsText} />
+                    <WatsonMessage text={message.watsonText} />
+                </div>
             )
         })
-        const { height} = this.state; 
+
+        const contacts = this.state.messages.map((message, index) => {
+        return <Contacts key={index} name={message.contactsPhone}/> 
+        })
+
+        const { height } = this.state;
         const style = {
             height: height
-        } 
+        }
 
         return (
-            <div style={style} className="app-messenger">
-                <div className="header">
-                    <div className="left">
-                        <div className="actions">
-                        </div>
-                    </div>
-                    <div className="content"><h2>Title</h2></div>
-                    <div className="right">
-                        <div className="user-bar">
-                            <div className="profile-name">Kyle Saldana</div>
-                            <div className="profile-image">
-                                <img src={avatar} alt="" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="main">
-                    <div className="sidebar-left">Left sidebar</div>
-                    <div className="content">
-                        <div className="messages">
-                            {messages}
-                        </div>
-
-                        <div className="messenger-input">
-                            <div className="text-input">
-                                <textarea placeholder="write your message" />
-                            </div>
-                            <div className="actions">
-                                <button className="">Send</button>
-                            </div>
-                        </div>
-                    </div>
-                    {/* <div className="sidebar-right">Right sidebar</div> */}
-                </div>
+            <div id="container">
+                <aside id="sidebar">{contacts}</aside>
+                <section id="main">
+                    <section id="messages-list">{messages}</section>
+                </section>
             </div>
         )
     }
