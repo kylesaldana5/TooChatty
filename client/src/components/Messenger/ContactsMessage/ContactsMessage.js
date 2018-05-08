@@ -1,6 +1,5 @@
 import React from 'react';
 import './ContactsMessage.css'
-import avatar from '../../../assets/avatar.png'
 
 const contactsMessage = (props) => {
     return (

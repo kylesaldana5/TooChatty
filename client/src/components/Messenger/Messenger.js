@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './Messenger.css'
-import avatar from '../../assets/avatar.png'
 import ContactsMessage from './ContactsMessage/ContactsMessage';
 import WatsonMessage from './WatsonMessage/WatsonMessage';
 import Contacts from './Contacts/Contacts'
@@ -16,9 +15,10 @@ export default class Messenger extends Component {
             height: window.innerHeight,
             messages: [],
             phoneNumbers: [],
-            isHidden: true
-        }
-
+            isHidden: true,
+            }
+        this.toggleHidden = this.toggleHidden.bind(this)
+        
         this._onResize = this._onResize.bind(this)
     }
 
@@ -28,13 +28,14 @@ export default class Messenger extends Component {
         })
     }
 
+    // all request to the server should happen inside here
     componentDidMount() {
         window.addEventListener("resize", this._onResize)
 
         // get request to get all information from message table
         axios.get('http://localhost:5000/texts')
             .then(response => {
-                this.setState({ messages: response.data })                                             
+                this.setState({ messages: response.data })                                                                        
             })
             .catch(error => {
                 console.log(error);
@@ -61,6 +62,8 @@ export default class Messenger extends Component {
         })
     }
 
+
+
     render() {
         
         // mapping over data to insert into contacts message and watson message component 
@@ -74,8 +77,9 @@ export default class Messenger extends Component {
         })        
 
         // mapping over data to insert into contacts component 
-        const contacts = this.state.phoneNumbers.map((message, index) => {
-            return <Contacts key={index} name={message.contactsPhone} onClick={this.toggleHidden.bind(this)} />
+        const contacts = this.state.phoneNumbers.map((number, index) => {
+            return <Contacts key={index} number={number.contactsPhone} onClick={this.toggleHidden} />
+            
         })
         
 
