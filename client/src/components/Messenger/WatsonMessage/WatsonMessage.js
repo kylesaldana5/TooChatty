@@ -1,5 +1,4 @@
 import React from 'react';
-import avatar from '../../../assets/avatar.png'
 import './WatsonMessage.css'
 
 const WatsonMessage = (props) => {
