@@ -8,7 +8,7 @@ import Register from '../Register/Register'
 const navBar = () => {
     return (
         <HashRouter>
-            <div>
+            <div className="navbar">
                 <h1> NavBar </h1>
                 <ul>
                     <li> <NavLink to={'/register'} > Register </NavLink > </li>
