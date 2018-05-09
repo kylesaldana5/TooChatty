@@ -1,48 +1,118 @@
-import React from "react";
+import React, { Component } from "react";
+import axios from 'axios';
 import TextField from 'material-ui/TextField';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton'
 
-const register = () => {
+class Register extends Component {
 
-    return (
-        <MuiThemeProvider>
-            <div>
-                <h1>Register</h1>
-                <div className="text-field">
-                    <TextField
-                        hintText=""
-                        floatingLabelText="First Name"
-                        name="First Name"
-                    />
-                    <TextField
-                        hintText=""
-                        floatingLabelText="Last Name"
-                        name="Last Name"
-                    />
-                    <TextField
-                        hintText=""
-                        floatingLabelText="Username"
-                        name="Username"
-                    />
-                    <TextField
-                        hintText=""
-                        floatingLabelText="Password"
-                        name="Password"
-                    />
-                    <TextField
-                        hintText=""
-                        floatingLabelText="Twilio Number"
-                        name="Twilio Number"
-                    />
-                    <RaisedButton> Register </RaisedButton>
+    state={
+        isLoggedIn: false,
+        currentUsername: null,
+        currentUserId: null,
+    }
+
+    first_name = React.createRef();
+    last_name = React.createRef();
+    username = React.createRef();
+    password = React.createRef();
+    email = React.createRef();
+    twilio = React.createRef()
+    
+    
+
+    registerClick = () => {
+        console.log("working?")
+        let newUser = {
+            first_name: this.first_name.input.value,
+            last_name: this.last_name.input.value,
+            username: this.username.input.value,
+            email: this.email.input.value,
+            password: this.password.input.value,
+            twilio : this.twilio.input.value
+        };
+        this.register(newUser);
+    };
+
+    //REGISTER
+    register = newUser => {
+        axios.post(`http://localhost:5000/server/register`, newUser)
+            .then(user => {
+                console.log('CLIENT USER: ', user);
+                axios.post(`http://localhost:5000/server/login`, { username: newUser.username, password: newUser.password });
+                this.setState({
+                    isLoggedIn: true,
+                    currentUsername: user.data.username,
+                    currentUserId: user.data.id,
+                })
+            })
+            .catch(err => {
+                // this.setState({ "message": err.response.data.message })
+            })
+    };
+
+    render() {
+        return (
+            <MuiThemeProvider>
+                <div>
+                    <h1>Register</h1>
+                    <div className="text-field">
+                        <TextField
+                            hintText=""
+                            floatingLabelText="First Name"
+                            name="First Name"
+                            ref={input => {
+                                this.first_name = input;
+                            }}
+                        />
+                        <TextField
+                            hintText=""
+                            floatingLabelText="Last Name"
+                            name="Last Name"
+                            ref={input => {
+                                this.last_name = input;
+                            }}
+
+                        />
+                        <TextField
+                            hintText=""
+                            floatingLabelText="Username"
+                            name="Username"
+                            ref={input => {
+                                this.username = input;
+                            }}
+                        />
+                        <TextField
+                            hintText=""
+                            floatingLabelText="Email"
+                            name="Email" ref={input => {
+                                this.email = input;
+                            }}
+                        />
+                        <TextField
+                            hintText=""
+                            floatingLabelText="Password"
+                            name="Password" 
+                            ref={input => {
+                                this.password = input;
+                            }}
+                        />
+                        <TextField
+                            hintText=""
+                            floatingLabelText="Twilio Number"
+                            name="Twilio Number"
+                            ref={input => {
+                                this.twilio = input;
+                            }}
+                        />
+                        <RaisedButton onClick={this.registerClick}> Register </RaisedButton>
+                    </div>
                 </div>
-            </div>
-        </MuiThemeProvider>
+            </MuiThemeProvider>
 
-    )
-
+        )
+    }
 }
 
-export default register
+export default Register
 
