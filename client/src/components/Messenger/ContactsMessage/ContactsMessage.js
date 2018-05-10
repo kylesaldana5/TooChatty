@@ -1,21 +1,23 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './ContactsMessage.css'
 
-const contactsMessage = (props) => {
-    return (
+class ContactsMessage extends Component {
+    render() {
+        return (
 
-        <div className="message">
-            <div className="message-user-image">
-                {/* <img src={avatar}/> */}
-            </div>
-            <div className="message-body">
-                <div className="contact-text">
-                    <p>{props.text}</p>
+            <div className="message">
+                <div className="message-user-image">
+                    {/* <img src={avatar}/> */}
+                </div>
+                <div className="message-body">
+                    <div className="contact-text">
+                        <p>{this.props.text}</p>
+                    </div>
                 </div>
             </div>
-        </div>
 
-    )
+        )
+    }
 }
 
-export default contactsMessage;
+export default ContactsMessage;

@@ -39,6 +39,8 @@ const RegistrationStrategy = new Strategy(
                     message: "That email is already taken"
                 });
             } else {
+                console.log('req boddy in passport start', req.body);
+                
                 console.log("in the else");
                 const userPassword = generateHash(password); //function we defined above
                 const data =
@@ -47,6 +49,9 @@ const RegistrationStrategy = new Strategy(
                         email,
                         password: userPassword,
                         username: req.body.username,
+                        first_name: req.body.first_name,
+                        last_name: req.body.last_name,
+                        twilioPhone: req.body.twilio,
                         isOutreach: req.body.isOutreach
                     };
                 // create() is a Sequelize method

@@ -5,9 +5,7 @@ import ContactsMessage from './ContactsMessage/ContactsMessage';
 import WatsonMessage from './WatsonMessage/WatsonMessage';
 import Contacts from './Contacts/Contacts'
 
-
-
-export default class Messenger extends Component {
+class Messenger extends Component {
 
     constructor(props) {
         super(props)
@@ -15,26 +13,14 @@ export default class Messenger extends Component {
         this.state = {
             messages: [],
             phoneNumbers: [],
-            isHidden: true,
+            number: ""
         }
-
-        this.toggleHidden = this.toggleHidden.bind(this)
-
     }
-
 
     // all request to the server should happen inside here
     componentDidMount() {
-        window.addEventListener("resize", this._onResize)
+        
 
-        // get request to get all information from message table
-        axios.get('http://localhost:5000/texts')
-            .then(response => {
-                this.setState({ messages: response.data })
-            })
-            .catch(error => {
-                console.log(error);
-            });
 
         // get request to get non duplicate phone numbers
         axios.get('http://localhost:5000/numbers')
@@ -45,14 +31,26 @@ export default class Messenger extends Component {
                 console.log(error);
             });
     }
+    
+    // grabbing the id of the phone # then to display the corresponding messages
+        getMessages = (e) => {
+       
+            this.setState({ number: e.target.id }, () => {
+                console.log(this.state.number)
 
 
-    toggleHidden() {
-        this.setState({
-            isHidden: !this.state.isHidden
-        })
+
+            // get request to get all information from message table
+                axios.get(`http://localhost:5000/texts/${this.state.number}`)
+                .then(response => {
+                    this.setState({ messages: response.data })
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        });
+    
     }
-
 
     render() {
 
@@ -68,7 +66,14 @@ export default class Messenger extends Component {
 
         // mapping over data to insert into contacts component 
         const contacts = this.state.phoneNumbers.map((number, index) => {
-            return <Contacts key={index} number={number.contactsPhone} onClick={this.toggleHidden} />
+            return (
+                <Contacts
+                    key={index}
+                    id={number.contactsPhone}
+                    number={number.contactsPhone}
+                    onClick={this.getMessages}
+                />
+            )
 
         })
 
@@ -77,13 +82,18 @@ export default class Messenger extends Component {
                 <div id="container">
                     <aside id="sidebar"> {contacts}</aside>
                     <section id="main">
-                        <section id="messages-list">{!this.state.isHidden && messages}</section>
+                        <section id="messages-list">{messages}</section>
                     </section>
                 </div>
-                
+
             </div>
         )
     }
 }
+
+export default Messenger;
+
+
+
 
 

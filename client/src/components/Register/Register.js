@@ -10,8 +10,13 @@ class Register extends Component {
         isLoggedIn: false,
         currentUsername: null,
         currentUserId: null,
+        open: false,
+        message: '',
     }
 
+
+
+// Creating references to grab values in user forms
     first_name = React.createRef();
     last_name = React.createRef();
     username = React.createRef();
@@ -20,9 +25,8 @@ class Register extends Component {
     twilio = React.createRef()
     
     
-
+// Handler for passing user obj to server
     registerClick = () => {
-        console.log("working?")
         let newUser = {
             first_name: this.first_name.input.value,
             last_name: this.last_name.input.value,
@@ -41,17 +45,21 @@ class Register extends Component {
                 console.log('CLIENT USER: ', user);
                 axios.post(`http://localhost:5000/server/login`, { username: newUser.username, password: newUser.password });
                 this.setState({
+                    message: "",
                     isLoggedIn: true,
                     currentUsername: user.data.username,
                     currentUserId: user.data.id,
+                    open: false
                 })
             })
             .catch(err => {
-                // this.setState({ "message": err.response.data.message })
+                this.setState({ "message": err.response.data.message })
             })
     };
 
-    render() {
+
+            
+    render() {    
         return (
             <MuiThemeProvider>
                 <div>
@@ -105,7 +113,8 @@ class Register extends Component {
                                 this.twilio = input;
                             }}
                         />
-                        <RaisedButton onClick={this.registerClick}> Register </RaisedButton>
+                            <RaisedButton onClick={this.registerClick}> Register   </RaisedButton>
+                    
                     </div>
                 </div>
             </MuiThemeProvider>
