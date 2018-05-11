@@ -5,7 +5,11 @@ class App extends Component {
   render() {
     return (
       <div>
-        <NavBar />
+        <div>
+          <header className="navbar">
+            <NavBar />
+          </header>
+        </div>
       </div>
     );
   }

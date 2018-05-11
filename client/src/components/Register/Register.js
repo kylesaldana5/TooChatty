@@ -52,6 +52,9 @@ class Register extends Component {
                     open: false
                 })
             })
+            .then(()=>{
+                this.props.history.replace('/messenger')
+            })
             .catch(err => {
                 this.setState({ "message": err.response.data.message })
             })
@@ -113,7 +116,7 @@ class Register extends Component {
                                 this.twilio = input;
                             }}
                         />
-                            <RaisedButton onClick={this.registerClick}> Register   </RaisedButton>
+                        <RaisedButton onClick={(e) => { this.registerClick(e) }}> Register </RaisedButton>
                     
                     </div>
                 </div>
