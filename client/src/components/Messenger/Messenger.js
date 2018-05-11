@@ -4,19 +4,26 @@ import './Messenger.css'
 import ContactsMessage from './ContactsMessage/ContactsMessage';
 import WatsonMessage from './WatsonMessage/WatsonMessage';
 import Contacts from './Contacts/Contacts'
+import { subscribeToTimer } from '..../api';
 
 class Messenger extends Component {
 
     constructor(props) {
         super(props)
-
-        this.state = {
-            messages: [],
-            phoneNumbers: [],
-            number: ""
-        }
+        subscribeToTimer((err, timestamp) => this.setState({
+             
+                messages,
+                phoneNumbers,
+                number
+            
+        }));
     }
 
+    state={
+        messages: [],
+        phoneNumbers: [],
+        number: ""
+    }
     // all request to the server should happen inside here
     componentDidMount() {
 
