@@ -56,7 +56,15 @@ class Contacts extends Component {
             ref={input => {
                 this.company = input;
             }}
-            />     
+            />
+            <h3 className="icon-menu">Email</h3>
+            <TextField
+                name="Email"
+                underlineFocusStyle={this.styles.underlineStyle}
+                ref={input => {
+                    this.email = input;
+                }}
+            />      
             <FlatButton onClick={(e) => { this.changeName(e)}}> Submit </FlatButton>
         </IconMenu>
     );
@@ -67,6 +75,7 @@ class Contacts extends Component {
             first_name: this.first_name.input.value,
             last_name: this.last_name.input.value,
             company: this.company.input.value,
+            email: this.email.input.value,
             phone: this.props.id
         }
         this.updateName(newName)
