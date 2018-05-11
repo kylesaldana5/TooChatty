@@ -17,12 +17,12 @@ class Register extends Component {
 
 
 // Creating references to grab values in user forms
-    first_name = React.createRef();
-    last_name = React.createRef();
-    username = React.createRef();
-    password = React.createRef();
-    email = React.createRef();
-    twilio = React.createRef()
+    // first_name = React.createRef();
+    // last_name = React.createRef();
+    // username = React.createRef();
+    // password = React.createRef();
+    // email = React.createRef();
+    // twilio = React.createRef()
     
     
 // Handler for passing user obj to server
