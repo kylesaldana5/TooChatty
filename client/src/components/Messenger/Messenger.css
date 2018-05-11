@@ -15,6 +15,9 @@ body {
 }
 #main {
     grid-area: main;
+    /* border: 4px solid rgb(83, 83, 235); */
+    border-radius: 2px;
+    background-color: rgb(216, 150, 112);
 }
 #messages-list {
     padding: 5px 0 0 5px;
@@ -22,6 +25,9 @@ body {
 #sidebar {
     grid-area: sidebar;
     padding: 5px 0 0 5px;
-    border-right: 1px solid #3f3f3f;
+    /* border-right: 1px solid #3f3f3f; */
     height: 100%;
+    border: 4px solid rgb(216, 112, 138);
+    border-radius: 2px;
+    background-color: rgb(243, 221, 146);
 }

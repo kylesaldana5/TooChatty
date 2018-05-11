@@ -1,5 +1,9 @@
 .watson-message {
   margin-bottom: 15px;
+  display: flex;
+  flex-direction: row-reverse;
+  
+
 }
 .message-body {
   max-width: 80%;

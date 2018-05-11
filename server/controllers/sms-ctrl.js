@@ -1,11 +1,9 @@
 "use strict";
-const express = require('express');
 const AssistantV1 = require('watson-developer-cloud/assistant/v1');
-const app = express();
 const keys = require('../key')
 
-app.set('models', require('../models'))
 
+let contexts = [];
 
 module.exports.messageCovo = (req, res) => {
         
@@ -22,7 +20,7 @@ module.exports.messageCovo = (req, res) => {
         const workspace_id = keys.workspace_id ; 
 
         //   checking phone number has a context number that already exist
-        let contexts = [];
+        
         let context = null;
         let index = 0;
         let contextIndex = 0;
@@ -90,14 +88,12 @@ module.exports.messageCovo = (req, res) => {
                 const { Message } = req.app.get("models");
                 Message.create({
                     contactsPhone: number,
-                    contactsText: message,
+                    contactsText: encodeURI(message),
                     watsonText: response.output.text[0],
                     twilioPhone: twilioNumber
 
                 })
                     .then((data) => {
-                        console.log('message table data', data);
-
                     })
                     .catch((err) => {
                         console.log('err', err);
@@ -110,8 +106,6 @@ module.exports.messageCovo = (req, res) => {
                     phone: number,                    
                 })
                     .then((data) => {
-                        console.log('name table data', data);
-
                     })
                     .catch((err) => {
                         console.log('err', err);
@@ -120,6 +114,4 @@ module.exports.messageCovo = (req, res) => {
 
             }
         });
-
-        res.send('');
 }
