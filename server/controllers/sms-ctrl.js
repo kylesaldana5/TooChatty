@@ -90,7 +90,8 @@ module.exports.messageCovo = (req, res) => {
                     contactsPhone: number,
                     contactsText: encodeURI(message),
                     watsonText: response.output.text[0],
-                    twilioPhone: twilioNumber
+                    twilioPhone: twilioNumber,
+                    logging: false
 
                 })
                     .then((data) => {
@@ -103,7 +104,8 @@ module.exports.messageCovo = (req, res) => {
                 // postgres for the name table
                 const {Name} = req.app.get("models");
                 Name.create({
-                    phone: number,                    
+                    phone: number,      
+                    logging: false                                  
                 })
                     .then((data) => {
                     })
