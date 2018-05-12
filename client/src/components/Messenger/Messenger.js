@@ -4,6 +4,8 @@ import './Messenger.css'
 import ContactsMessage from './ContactsMessage/ContactsMessage';
 import WatsonMessage from './WatsonMessage/WatsonMessage';
 import Contacts from './Contacts/Contacts'
+import openSocket from 'socket.io-client';
+
 
 class Messenger extends Component {
 
@@ -12,9 +14,17 @@ class Messenger extends Component {
 
         this.state = {
             messages: [],
-            nameAndNumbers: [],
-            number: ""
+            nameAndNumbers: {},
+            number: "",
+            update: []
         }
+        // listening for changes on the server 
+        const socket = openSocket('http://localhost:5000');
+        socket.on('timer', ({ name, message }) => this.setState((oldState) => 
+        ({ messages: [...oldState.messages, message], 
+            nameAndNumbers: { ...oldState.nameAndNumbers, [name.phone]: name}
+        })));
+
     }
 
 
@@ -24,8 +34,10 @@ class Messenger extends Component {
         // get request to get non duplicate phone numbers
         axios.get('http://localhost:5000/getName')
             .then(response => {
+                // reducing state to be added when updated, stops duplication issue
+                const nameAndNumbers = response.data.reduce((acc, number)=>({...acc, [number.phone]: number}), {})
                 console.log('number', response.data);
-                this.setState({ nameAndNumbers: response.data })
+                this.setState({ nameAndNumbers })
             })
             .catch(error => {
                 console.log(error);
@@ -65,10 +77,10 @@ class Messenger extends Component {
         })
 
         // mapping over data to insert into contacts component 
-        const contacts = this.state.nameAndNumbers.map((data, index) => {
+        const contacts = Object.values(this.state.nameAndNumbers).map((data, index) => {
             return (
                 <Contacts
-                    key={index}
+                    key={data.phone}
                     id={data.phone}
                     number={data.phone}
                     name={data.name}

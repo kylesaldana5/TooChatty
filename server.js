@@ -1,8 +1,11 @@
-const express = require('express');
 const session = require("express-session");
 const passport = require("passport");
-const app = express();
-const port = process.env.PORT || 5000;
+const socket = require('./socket');
+const app = socket.app;
+const port = socket.port;
+const io = socket.io;
+const server = socket.server
+
 
 // auth / route stuff
 const bodyParser = require("body-parser");
@@ -33,6 +36,14 @@ app.use(routes);
 app.set("models", require("./server/models"));
 
 
+//  handle a connection of a client, so that you can publish (emit) events to that client.
+io.on('connection', (client) => {
+    client.on('subscribeToTimer', (interval) => {
+        console.log('client is subscribing to timer with interval ', interval);
+    });
+});
+
+module.exports = {io};
 
 
-app.listen(port, () => console.log(`Listening on port ${port}`));
+server.listen(port, () => console.log(`Listening on port ${port}`));
