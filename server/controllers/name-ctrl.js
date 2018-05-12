@@ -11,18 +11,10 @@ module.exports.newName = (req, res, next) => {
 
 }
 
-module.exports.getName = (req, res, next) => {
-    let { Name } = req.app.get("models");
-    Name.findAll(
-        {
-            where: {
-                phone: req.params.phone
-            }
-        }
-    )
-    .then((numbers) => {
+module.exports.getName = (req, res, next) =>{
+    let { Name } = req.app.get('models');
+    Name.findAll({})
+        .then((numbers) => {
         res.status(200).json(numbers)
     })
 }
-
-

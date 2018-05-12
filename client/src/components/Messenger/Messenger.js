@@ -12,72 +12,48 @@ class Messenger extends Component {
 
         this.state = {
             messages: [],
-            phoneNumbers: [],
-            name: [],
+            nameAndNumbers: [],
             number: ""
         }
     }
 
-    
+
     // all request to the server should happen inside here
     componentDidMount() {
-        
+
         // get request to get non duplicate phone numbers
-        axios.get('http://localhost:5000/numbers')
+        axios.get('http://localhost:5000/getName')
             .then(response => {
-                this.setState({ phoneNumbers: response.data })
-                // console.log('number', response.data);
-            })
-            .then(()=>{
-                axios.get(`http://localhost:5000/getName/`)
-                .then((response)=>{
-                    this.setState({ name: response.data})
-                    // console.log('response', response.data);
-                    
-                })    
-                            
+                console.log('number', response.data);
+                this.setState({ nameAndNumbers: response.data })
             })
             .catch(error => {
                 console.log(error);
             });
-    }
 
-    // Promise all that will get all numbers to be used in get to get names for the numbers that are available
-    getNames = () =>{
-        this.state.phoneNumbers.forEach(number=>{
-            let numArr = [];
-            let newNumber = number.contactsPhone ;
-            numArr.push(newNumber)
-            
-            Promise.all(numArr)
-            .then((n)=>{
-
-                console.log('arr',n);
-            })
-        })
     }
 
     // grabbing the id of the phone # then to display the corresponding messages
     getMessages = (e) => {
         this.setState({ number: e.target.id }, () => {
-            
+
             // get request to get all information from message table
             axios.get(`http://localhost:5000/texts/${this.state.number}`)
-            .then(response => {
-                this.setState({ messages: response.data })
-            })
-            .catch(error => {
-                console.log(error);
-            });
+                .then(response => {
+                    this.setState({ messages: response.data })
+                })
+                .catch(error => {
+                    console.log(error);
+                });
         });
         
     }
-    
+
 
 
 
     render() {
-        this.getNames()
+
         // mapping over data to insert into contacts message and watson message component 
         const messages = this.state.messages.map((message, index) => {
             return (
@@ -89,12 +65,13 @@ class Messenger extends Component {
         })
 
         // mapping over data to insert into contacts component 
-        const contacts = this.state.phoneNumbers.map((number, index) => {
+        const contacts = this.state.nameAndNumbers.map((data, index) => {
             return (
                 <Contacts
                     key={index}
-                    id={number.contactsPhone}
-                    number={number.contactsPhone}
+                    id={data.phone}
+                    number={data.phone}
+                    name={data.name}
                     onClick={this.getMessages}
                 />
             )

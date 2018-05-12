@@ -99,7 +99,9 @@ class Contacts extends Component {
                     <List >
                         <ListItem
                             leftIcon={<Avatar src="https://cdn2.iconfinder.com/data/icons/rcons-user/32/male-shadow-fill-circle-512.png" />}
-                            primaryText={ <p id={this.props.id} onClick={this.props.onClick} className="message-author"> {this.props.number}</p> }
+                            primaryText={ 
+                                <p id={this.props.id} onClick={this.props.onClick} className="message-author">{this.props.name} {this.props.number}</p> 
+                            }
                             rightIconButton={this.rightIconMenu}
                          />
                     </List>
@@ -110,6 +112,9 @@ class Contacts extends Component {
     }
 
 }
+                                
+                                
+                                
 
 
 export default Contacts;
