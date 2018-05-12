@@ -12,30 +12,31 @@ class Messenger extends Component {
 
         this.state = {
             messages: [],
-            phoneNumbers: [],
+            nameAndNumbers: [],
             number: ""
         }
     }
 
+
     // all request to the server should happen inside here
     componentDidMount() {
 
-
-
         // get request to get non duplicate phone numbers
-        axios.get('http://localhost:5000/numbers')
+        axios.get('http://localhost:5000/getName')
             .then(response => {
-                this.setState({ phoneNumbers: response.data })
+                console.log('number', response.data);
+                this.setState({ nameAndNumbers: response.data })
             })
             .catch(error => {
                 console.log(error);
             });
+
     }
 
     // grabbing the id of the phone # then to display the corresponding messages
     getMessages = (e) => {
         this.setState({ number: e.target.id }, () => {
-            
+
             // get request to get all information from message table
             axios.get(`http://localhost:5000/texts/${this.state.number}`)
                 .then(response => {
@@ -45,7 +46,7 @@ class Messenger extends Component {
                     console.log(error);
                 });
         });
-
+        
     }
 
 
@@ -64,12 +65,13 @@ class Messenger extends Component {
         })
 
         // mapping over data to insert into contacts component 
-        const contacts = this.state.phoneNumbers.map((number, index) => {
+        const contacts = this.state.nameAndNumbers.map((data, index) => {
             return (
                 <Contacts
                     key={index}
-                    id={number.contactsPhone}
-                    number={number.contactsPhone}
+                    id={data.phone}
+                    number={data.phone}
+                    name={data.name}
                     onClick={this.getMessages}
                 />
             )
