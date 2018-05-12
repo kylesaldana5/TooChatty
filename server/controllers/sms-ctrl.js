@@ -1,7 +1,7 @@
 "use strict";
 const AssistantV1 = require('watson-developer-cloud/assistant/v1');
 const keys = require('../key')
-
+const io = require('../../socket').io;
 
 let contexts = [];
 
@@ -86,7 +86,7 @@ module.exports.messageCovo = (req, res) => {
 
                 // postgres for the message table
                 const { Message } = req.app.get("models");
-                Message.create({
+               const messageCreate =  Message.create({
                     contactsPhone: number,
                     contactsText: encodeURI(message),
                     watsonText: response.output.text[0],
@@ -94,8 +94,6 @@ module.exports.messageCovo = (req, res) => {
                     logging: false
 
                 })
-                    .then((data) => {
-                    })
                     .catch((err) => {
                         console.log('err', err);
 
@@ -103,17 +101,27 @@ module.exports.messageCovo = (req, res) => {
 
                 // postgres for the name table
                 const {Name} = req.app.get("models");
-                Name.create({
+                const nameCreate = Name.create({
                     phone: number,      
                     logging: false                                  
                 })
-                    .then((data) => {
-                    })
                     .catch((err) => {
                         console.log('err', err);
 
-                    });
-
+                    })
+                    .then(() =>
+                        Name.findOne({
+                            where:{phone:number}
+                        })
+                    )
+                    // Promise array sending updates from the server to client side //web sockets
+                    let promiseArr = [nameCreate, messageCreate];
+                    Promise.all(promiseArr)
+                    .then(([newName, newMessage])=>{
+                        
+                        io.emit('timer', {name: newName, message: newMessage})
+                    })
+                    
             }
         });
 }

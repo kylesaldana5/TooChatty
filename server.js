@@ -1,9 +1,11 @@
-const express = require('express');
 const session = require("express-session");
 const passport = require("passport");
-const app = express();
-const port = process.env.PORT || 5000;
-const io = require('socket.io')();
+const socket = require('./socket');
+const app = socket.app;
+const port = socket.port;
+const io = socket.io;
+const server = socket.server
+
 
 // auth / route stuff
 const bodyParser = require("body-parser");
@@ -38,13 +40,10 @@ app.set("models", require("./server/models"));
 io.on('connection', (client) => {
     client.on('subscribeToTimer', (interval) => {
         console.log('client is subscribing to timer with interval ', interval);
-        setInterval(() => {
-            client.emit('timer', new Date());
-        }, interval);
     });
 });
 
-io.listen(port);
-console.log('listening on port ', port);
+module.exports = {io};
 
-// app.listen(port, () => console.log(`Listening on port ${port}`));
+
+server.listen(port, () => console.log(`Listening on port ${port}`));
