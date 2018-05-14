@@ -107,7 +107,7 @@ class Contacts extends Component {
                         <ListItem
                             leftIcon={<Avatar src="https://cdn2.iconfinder.com/data/icons/rcons-user/32/male-shadow-fill-circle-512.png" />}
                             primaryText={ 
-                                <p id={this.props.id} onClick={this.props.onClick} className="message-author">{this.props.first_name} {this.props.number}</p> 
+                                <p id={this.props.id} onClick={this.props.onClick} className="message-author">{this.props.first_name || this.props.number}</p> 
                             }
                             rightIconButton={this.rightIconMenu}
                          />
