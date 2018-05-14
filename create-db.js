@@ -25,7 +25,7 @@ models.sequelize
         })
     .then(()=>{
         return models.Name.create({
-            contactsPhone: +6158881457,                        
+            phone: 6158881457,                        
             name: "MOM",
             picture: "",
         })

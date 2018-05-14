@@ -66,7 +66,6 @@ class Register extends Component {
         return (
             <MuiThemeProvider>
                 <div>
-                    <h1>Register</h1>
                     <div className="text-field">
                         <TextField
                             hintText=""
