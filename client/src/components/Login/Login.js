@@ -3,6 +3,7 @@ import TextField from 'material-ui/TextField';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton'
 import axios from 'axios';
+import './Login.css'
 
 class Login extends Component {
     
@@ -42,16 +43,15 @@ class Login extends Component {
             })
             .catch(err => {
                 console.log('err',err );
-                
                 this.setState({message : err.response.data.message})
             });
     };
+                
     
     render() {
         return (
             <MuiThemeProvider>
                 <div>
-                    <h1>Login</h1>
                     <div className="text-field">
                         <TextField
                             ref={input => {

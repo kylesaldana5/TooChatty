@@ -35,6 +35,7 @@ class Contacts extends Component {
         <IconMenu iconButtonElement={this.iconButtonElement}>
             <h3 className="icon-menu">First Name</h3>
             <TextField
+            hintText={this.props.first_name}
             name="First Name"
             underlineFocusStyle={this.styles.underlineStyle}
             ref={input => {
@@ -43,6 +44,7 @@ class Contacts extends Component {
             />       
             <h3 className="icon-menu">Last Name</h3>
             <TextField 
+            hintText={this.props.last_name}
             name="Last Name"
             underlineFocusStyle={this.styles.underlineStyle}
             ref={input => {
@@ -51,6 +53,7 @@ class Contacts extends Component {
             />   
             <h3 className="icon-menu">Company</h3>
             <TextField 
+            hintText={this.props.company}
             name="Company"
             underlineFocusStyle={this.styles.underlineStyle}
             ref={input => {
@@ -59,6 +62,7 @@ class Contacts extends Component {
             />
             <h3 className="icon-menu">Email</h3>
             <TextField
+                hintText={this.props.email}
                 name="Email"
                 underlineFocusStyle={this.styles.underlineStyle}
                 ref={input => {
@@ -72,10 +76,10 @@ class Contacts extends Component {
     // handler for passing updated name obj
     changeName = () =>{
        let newName={
-            first_name: this.first_name.input.value,
-            last_name: this.last_name.input.value,
-            company: this.company.input.value,
-            email: this.email.input.value,
+            first_name: this.first_name.input.value || this.props.first_name,
+           last_name: this.last_name.input.value || this.props.last_name,
+           company: this.company.input.value || this.props.company,
+            email: this.email.input.value || this.props.email,
             phone: this.props.id
         }
         this.updateName(newName)
@@ -87,8 +91,11 @@ class Contacts extends Component {
         axios.post(`http://localhost:5000/name`, newName)
         .then((name)=>{
             console.log('name',name );
-            
+            window.location.reload()
         })
+            .catch(err => {
+                console.log('err', err);
+            });
     }
 
     render() {
@@ -100,7 +107,7 @@ class Contacts extends Component {
                         <ListItem
                             leftIcon={<Avatar src="https://cdn2.iconfinder.com/data/icons/rcons-user/32/male-shadow-fill-circle-512.png" />}
                             primaryText={ 
-                                <p id={this.props.id} onClick={this.props.onClick} className="message-author">{this.props.name} {this.props.number}</p> 
+                                <p id={this.props.id} onClick={this.props.onClick} className="message-author">{this.props.first_name} {this.props.number}</p> 
                             }
                             rightIconButton={this.rightIconMenu}
                          />

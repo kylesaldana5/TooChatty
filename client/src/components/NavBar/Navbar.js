@@ -25,6 +25,7 @@ const navBar = () => {
                             <li> <NavLink to={'/messenger'} style={style}> Messenger </NavLink >  </li>
                             <li> <NavLink to={'/register'} style={style}> Register </NavLink > </li>
                             <li> <NavLink to={'/login'} style={style}> Login </NavLink >  </li>
+                            <li> <NavLink to={'/login'} style={style}> Logout </NavLink >  </li>                            
                         </ul>
                     </div>
                 </MuiThemeProvider>

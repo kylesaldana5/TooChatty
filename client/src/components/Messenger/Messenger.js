@@ -36,7 +36,6 @@ class Messenger extends Component {
             .then(response => {
                 // reducing state to be added when updated, stops duplication issue
                 const nameAndNumbers = response.data.reduce((acc, number)=>({...acc, [number.phone]: number}), {})
-                console.log('number', response.data);
                 this.setState({ nameAndNumbers })
             })
             .catch(error => {
@@ -77,13 +76,16 @@ class Messenger extends Component {
         })
 
         // mapping over data to insert into contacts component 
-        const contacts = Object.values(this.state.nameAndNumbers).map((data, index) => {
+        const contacts = Object.values(this.state.nameAndNumbers).map((data, index) => {   
             return (
                 <Contacts
                     key={data.phone}
                     id={data.phone}
                     number={data.phone}
-                    name={data.name}
+                    first_name={data.first_name}
+                    last_name={data.last_name}
+                    email={data.email}
+                    company={data.company}
                     onClick={this.getMessages}
                 />
             )
