@@ -11,8 +11,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 const navBar = () => {
 
     const style={
-        textDecoration: 'none' ,
-        color: 'black',
+        textDecoration: 'none',
+        color: "white"
     }
 
     return (
