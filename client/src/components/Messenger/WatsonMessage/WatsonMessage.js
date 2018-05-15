@@ -8,7 +8,7 @@ const WatsonMessage = (props) => {
                 <div className="message-user-image">
                     {/* <img src={avatar}/> */}
                 </div>
-                <div className="message-body">
+                <div className="watson-message-body">
                     <div className="message-author"> {props.name} </div>
                     <div className="message-text">
                         <p>{props.text}</p>
