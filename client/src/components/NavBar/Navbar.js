@@ -4,7 +4,6 @@ import './NavBar.css'
 import Messenger from '../Messenger/Messenger'
 import Register from '../Register/Register'
 import Login from '../Login/Login'
-import FlatButton from 'material-ui/FlatButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 
