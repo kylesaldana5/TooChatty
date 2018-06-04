@@ -33,17 +33,11 @@ module.exports.messageCovo = (req, res) => {
             index = index + 1;
         });
 
-        // console.log('Recieved message from ' + number + ' saying \'' + message + '\'');
-
         let conversation = new AssistantV1({
             username: watsonUsername,
             password: watsonPassword,
             version: '2018-02-16'
         });
-
-        // console.log("context", context);
-        // console.log("length", contexts.length);
-
 
         conversation.message({
             input: { text: message },
@@ -53,7 +47,6 @@ module.exports.messageCovo = (req, res) => {
             if (err) {
                 console.error(err);
             } else {
-                // console.log("response output", response.output.text[0]);
                 if (context == null) {
                     contexts.push({ 'from': number, 'context': response.context });
                 } else {
@@ -64,7 +57,6 @@ module.exports.messageCovo = (req, res) => {
                 let intent = response.intents[0].intent;
                 console.log("intent", intent);
                 if (intent == "done") {
-                    //contexts.splice(contexts.indexOf({'from': number, 'context': response.context}),1);
                     contexts.splice(contextIndex, 1);
                 }
                 }
